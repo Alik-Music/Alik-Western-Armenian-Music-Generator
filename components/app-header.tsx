@@ -1,0 +1,90 @@
+"use client"
+
+import { Music, Library, FileText, Plus, User } from "lucide-react"
+import { Button } from "@/components/ui/button"
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu"
+import { Avatar, AvatarFallback } from "@/components/ui/avatar"
+
+interface AppHeaderProps {
+  activeTab: string
+  onTabChange: (tab: string) => void
+}
+
+export function AppHeader({ activeTab, onTabChange }: AppHeaderProps) {
+  return (
+    <header className="bg-primary text-primary-foreground">
+      <div className="flex items-center justify-between px-6 py-3">
+        <div className="flex items-center gap-2">
+          <Music className="h-6 w-6 text-secondary" />
+          <span className="text-lg font-bold tracking-wide">SongForge</span>
+        </div>
+
+        <nav className="flex items-center gap-1">
+          <button
+            onClick={() => onTabChange("create")}
+            className={`flex items-center gap-2 rounded-lg px-4 py-2 text-sm font-medium tracking-wide transition-colors ${
+              activeTab === "create"
+                ? "bg-secondary text-secondary-foreground"
+                : "text-primary-foreground/80 hover:bg-primary-foreground/10 hover:text-primary-foreground"
+            }`}
+          >
+            <Plus className="h-4 w-4" />
+            Create
+          </button>
+          <button
+            onClick={() => onTabChange("library")}
+            className={`flex items-center gap-2 rounded-lg px-4 py-2 text-sm font-medium tracking-wide transition-colors ${
+              activeTab === "library"
+                ? "bg-secondary text-secondary-foreground"
+                : "text-primary-foreground/80 hover:bg-primary-foreground/10 hover:text-primary-foreground"
+            }`}
+          >
+            <Library className="h-4 w-4" />
+            Library
+          </button>
+          <button
+            onClick={() => onTabChange("lyrics")}
+            className={`flex items-center gap-2 rounded-lg px-4 py-2 text-sm font-medium tracking-wide transition-colors ${
+              activeTab === "lyrics"
+                ? "bg-secondary text-secondary-foreground"
+                : "text-primary-foreground/80 hover:bg-primary-foreground/10 hover:text-primary-foreground"
+            }`}
+          >
+            <FileText className="h-4 w-4" />
+            Lyrics
+          </button>
+        </nav>
+
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Button
+              variant="ghost"
+              className="relative h-9 w-9 rounded-full hover:bg-primary-foreground/10"
+            >
+              <Avatar className="h-9 w-9 border-2 border-secondary">
+                <AvatarFallback className="bg-secondary text-secondary-foreground text-sm font-bold">
+                  JD
+                </AvatarFallback>
+              </Avatar>
+            </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent align="end" className="w-48">
+            <DropdownMenuItem>
+              <User className="mr-2 h-4 w-4" />
+              Profile
+            </DropdownMenuItem>
+            <DropdownMenuSeparator />
+            <DropdownMenuItem>Settings</DropdownMenuItem>
+            <DropdownMenuItem>Sign Out</DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
+      </div>
+    </header>
+  )
+}
