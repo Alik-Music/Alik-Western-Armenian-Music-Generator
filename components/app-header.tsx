@@ -24,7 +24,7 @@ export function AppHeader({ activeTab, onTabChange }: AppHeaderProps) {
         <div className="flex items-center">
           <Image
             src="/images/logo.png"
-            alt="SongForge logo"
+            alt="Alik logo"
             width={120}
             height={40}
             className="h-8 w-auto object-contain"

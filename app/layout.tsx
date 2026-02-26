@@ -3,8 +3,8 @@ import { Analytics } from '@vercel/analytics/next'
 import './globals.css'
 
 export const metadata: Metadata = {
-  title: 'SongForge AI - Generate Songs with AI',
-  description: 'Create original songs with AI. Paste your lyrics, choose a style, and generate professional-quality music in seconds.',
+  title: 'Alik - Western Armenian Music Generator',
+  description: 'Create original Western Armenian music with AI. Paste your lyrics, choose a style, and generate professional-quality songs in seconds.',
 }
 
 export const viewport: Viewport = {
