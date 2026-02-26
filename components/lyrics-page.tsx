@@ -1,6 +1,7 @@
 "use client"
 
 import { useState } from "react"
+import { useIsDesktop } from "@/hooks/use-is-desktop"
 import {
   FileText,
   Plus,
@@ -120,6 +121,7 @@ export function LyricsPage({ onNavigateToSong }: LyricsPageProps) {
   const [editingId, setEditingId] = useState<string | null>(null)
   const [selectedLyric, setSelectedLyric] = useState<LyricsEntry | null>(null)
   const [mobileView, setMobileView] = useState<MobileView>("list")
+  const isDesktop = useIsDesktop()
 
   const filtered = lyrics.filter(
     (l) =>
@@ -217,9 +219,10 @@ export function LyricsPage({ onNavigateToSong }: LyricsPageProps) {
   }
 
   // --- Mobile/Tablet: Full-screen Create View ---
-  if (mobileView === "create") {
+  // Only show mobile views on non-desktop screens
+  if (!isDesktop && mobileView === "create") {
     return (
-      <main className="flex flex-1 flex-col overflow-hidden lg:hidden">
+      <main className="flex flex-1 flex-col overflow-hidden">
         <div className="flex items-center gap-3 border-b border-border px-4 py-3">
           <Button
             variant="ghost"
@@ -274,9 +277,9 @@ export function LyricsPage({ onNavigateToSong }: LyricsPageProps) {
   }
 
   // --- Mobile/Tablet: Full-screen Edit View ---
-  if (mobileView === "edit" && editingId) {
+  if (!isDesktop && mobileView === "edit" && editingId) {
     return (
-      <main className="flex flex-1 flex-col overflow-hidden lg:hidden">
+      <main className="flex flex-1 flex-col overflow-hidden">
         <div className="flex items-center gap-3 border-b border-border px-4 py-3">
           <Button
             variant="ghost"
@@ -334,10 +337,10 @@ export function LyricsPage({ onNavigateToSong }: LyricsPageProps) {
   }
 
   // --- Mobile/Tablet: Full-screen Preview View ---
-  if (mobileView === "preview" && selectedLyric) {
+  if (!isDesktop && mobileView === "preview" && selectedLyric) {
     const canEdit = !hasSongs(selectedLyric)
     return (
-      <main className="flex flex-1 flex-col overflow-hidden lg:hidden">
+      <main className="flex flex-1 flex-col overflow-hidden">
         <div className="flex items-center gap-3 border-b border-border px-4 py-3">
           <Button
             variant="ghost"
