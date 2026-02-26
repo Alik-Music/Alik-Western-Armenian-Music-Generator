@@ -52,15 +52,15 @@ export default function Home() {
       {activeTab === "create" && (
         <main className="flex flex-1 overflow-hidden">
           {/* Left Panel - Song Creator */}
-          <div className="w-1/2 border-r border-border overflow-hidden">
+          <div className="w-full lg:w-1/2 lg:border-r border-border overflow-hidden">
             <SongCreatorPanel
               onGenerate={handleGenerate}
               isGenerating={isGenerating}
             />
           </div>
 
-          {/* Right Panel - Song Library */}
-          <div className="w-1/2 overflow-hidden">
+          {/* Right Panel - Song Library (hidden on mobile/tablet) */}
+          <div className="hidden lg:block lg:w-1/2 overflow-hidden">
             <SongLibraryPanel songs={generatedSongs} />
           </div>
         </main>
