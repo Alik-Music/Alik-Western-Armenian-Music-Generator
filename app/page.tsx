@@ -208,8 +208,8 @@ export default function Home() {
         {activeTab === "lyrics" && (
           <LyricsPage
             onNavigateToSong={(songId) => {
+              setSelectedSongId(songId)
               setActiveTab("library")
-              // Could also pass songId to LibraryPage to highlight the song
             }}
           />
         )}

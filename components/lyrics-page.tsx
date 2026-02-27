@@ -390,11 +390,11 @@ export function LyricsPage({ onNavigateToSong }: LyricsPageProps) {
           </div>
         )}
 
-        <ScrollArea className="flex-1 px-4 py-5">
+        <div className="flex-1 overflow-y-auto px-4 py-5">
           <pre className="whitespace-pre-wrap font-sans text-sm leading-relaxed text-foreground/90">
             {selectedLyric.content}
           </pre>
-        </ScrollArea>
+        </div>
       </main>
     )
   }
@@ -587,11 +587,11 @@ export function LyricsPage({ onNavigateToSong }: LyricsPageProps) {
               </div>
             )}
 
-            <ScrollArea className="flex-1 px-8 py-6">
+            <div className="flex-1 overflow-y-auto px-8 py-6">
               <pre className="whitespace-pre-wrap font-sans text-sm leading-relaxed text-foreground/90">
                 {selectedLyric.content}
               </pre>
-            </ScrollArea>
+            </div>
           </div>
         ) : (
           <div className="flex h-full flex-col items-center justify-center text-center">
