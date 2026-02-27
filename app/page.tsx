@@ -187,7 +187,15 @@ export default function Home() {
           </main>
         )}
 
-        {activeTab === "library" && <LibraryPage onPlaySong={playSong} />}
+        {activeTab === "library" && (
+          <LibraryPage
+            onPlaySong={playSong}
+            onNavigateToLyrics={(lyricsId) => {
+              setActiveTab("lyrics")
+              // Could also pass lyricsId to LyricsPage to highlight the lyrics
+            }}
+          />
+        )}
         {activeTab === "lyrics" && (
           <LyricsPage
             onNavigateToSong={(songId) => {

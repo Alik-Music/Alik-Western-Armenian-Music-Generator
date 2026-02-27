@@ -12,7 +12,6 @@ import {
   Calendar,
   ArrowLeft,
   Music,
-  Lock,
 } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -33,12 +32,6 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import { Label } from "@/components/ui/label"
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from "@/components/ui/tooltip"
 
 export interface LyricsSong {
   id: string
@@ -363,7 +356,7 @@ export function LyricsPage({ onNavigateToSong }: LyricsPageProps) {
               <span>{selectedLyric.wordCount} words</span>
             </div>
           </div>
-          {canEdit ? (
+          {canEdit && (
             <Button
               variant="outline"
               size="sm"
@@ -373,20 +366,6 @@ export function LyricsPage({ onNavigateToSong }: LyricsPageProps) {
               <Edit3 className="h-3.5 w-3.5" />
               Edit
             </Button>
-          ) : (
-            <TooltipProvider>
-              <Tooltip>
-                <TooltipTrigger asChild>
-                  <div className="flex items-center gap-1 text-xs text-muted-foreground">
-                    <Lock className="h-3.5 w-3.5" />
-                    <span>Locked</span>
-                  </div>
-                </TooltipTrigger>
-                <TooltipContent>
-                  <p>Cannot edit lyrics with generated songs</p>
-                </TooltipContent>
-              </Tooltip>
-            </TooltipProvider>
           )}
         </div>
 
@@ -482,9 +461,6 @@ export function LyricsPage({ onNavigateToSong }: LyricsPageProps) {
                       <p className="truncate text-sm font-semibold text-foreground">
                         {entry.title}
                       </p>
-                      {locked && (
-                        <Lock className="h-3 w-3 shrink-0 text-muted-foreground" />
-                      )}
                     </div>
                     <p className="mt-0.5 truncate text-xs text-muted-foreground">
                       {entry.content.split("\n")[0]}
@@ -539,23 +515,7 @@ export function LyricsPage({ onNavigateToSong }: LyricsPageProps) {
                       </DropdownMenuContent>
                     </DropdownMenu>
                   )}
-                  {locked && (
-                    <TooltipProvider>
-                      <Tooltip>
-                        <TooltipTrigger asChild>
-                          <div
-                            className="h-6 w-6 flex items-center justify-center text-muted-foreground/50"
-                            onClick={(e) => e.stopPropagation()}
-                          >
-                            <Lock className="h-3.5 w-3.5" />
-                          </div>
-                        </TooltipTrigger>
-                        <TooltipContent>
-                          <p>Cannot modify lyrics with songs</p>
-                        </TooltipContent>
-                      </Tooltip>
-                    </TooltipProvider>
-                  )}
+
                 </button>
               )
             })}
@@ -569,14 +529,9 @@ export function LyricsPage({ onNavigateToSong }: LyricsPageProps) {
           <div className="flex h-full flex-col">
             <div className="flex items-center justify-between border-b border-border px-8 py-5">
               <div>
-                <div className="flex items-center gap-2">
-                  <h2 className="text-xl font-bold text-foreground">
-                    {selectedLyric.title}
-                  </h2>
-                  {hasSongs(selectedLyric) && (
-                    <Lock className="h-4 w-4 text-muted-foreground" />
-                  )}
-                </div>
+                <h2 className="text-xl font-bold text-foreground">
+                  {selectedLyric.title}
+                </h2>
                 <div className="mt-1 flex items-center gap-3 text-sm text-muted-foreground">
                   <span className="flex items-center gap-1">
                     <Calendar className="h-3.5 w-3.5" />
@@ -585,7 +540,7 @@ export function LyricsPage({ onNavigateToSong }: LyricsPageProps) {
                   <span>{selectedLyric.wordCount} words</span>
                 </div>
               </div>
-              {!hasSongs(selectedLyric) ? (
+              {!hasSongs(selectedLyric) && (
                 <Button
                   variant="outline"
                   size="sm"
@@ -595,20 +550,6 @@ export function LyricsPage({ onNavigateToSong }: LyricsPageProps) {
                   <Edit3 className="h-3.5 w-3.5" />
                   Edit
                 </Button>
-              ) : (
-                <TooltipProvider>
-                  <Tooltip>
-                    <TooltipTrigger asChild>
-                      <div className="flex items-center gap-1.5 text-sm text-muted-foreground">
-                        <Lock className="h-4 w-4" />
-                        <span>Locked</span>
-                      </div>
-                    </TooltipTrigger>
-                    <TooltipContent>
-                      <p>Cannot edit lyrics with generated songs</p>
-                    </TooltipContent>
-                  </Tooltip>
-                </TooltipProvider>
               )}
             </div>
 
