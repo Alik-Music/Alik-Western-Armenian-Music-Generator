@@ -9,6 +9,7 @@ import {
   Download,
   Trash2,
   Music,
+  ChevronRight,
 } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { ScrollArea } from "@/components/ui/scroll-area"
@@ -80,9 +81,10 @@ const initialSongs: Song[] = [
 
 interface SongLibraryPanelProps {
   songs: Song[]
+  onSongClick?: (song: Song) => void
 }
 
-export function SongLibraryPanel({ songs: externalSongs }: SongLibraryPanelProps) {
+export function SongLibraryPanel({ songs: externalSongs, onSongClick }: SongLibraryPanelProps) {
   const allSongs = [...externalSongs, ...initialSongs]
   const [playingId, setPlayingId] = useState<string | null>(null)
   const [progress, setProgress] = useState<Record<string, number>>({})
@@ -138,7 +140,18 @@ export function SongLibraryPanel({ songs: externalSongs }: SongLibraryPanelProps
           {allSongs.map((song) => (
             <div
               key={song.id}
+              onClick={() => onSongClick?.(song)}
+              role={onSongClick ? "button" : undefined}
+              tabIndex={onSongClick ? 0 : undefined}
+              onKeyDown={(e) => {
+                if (onSongClick && (e.key === "Enter" || e.key === " ")) {
+                  e.preventDefault()
+                  onSongClick(song)
+                }
+              }}
               className={`group rounded-xl border bg-card p-4 transition-all ${
+                onSongClick ? "cursor-pointer" : ""
+              } ${
                 playingId === song.id
                   ? "border-secondary shadow-md shadow-secondary/10"
                   : "border-border hover:border-primary/30 hover:shadow-sm"
@@ -147,7 +160,10 @@ export function SongLibraryPanel({ songs: externalSongs }: SongLibraryPanelProps
               <div className="flex items-center gap-3">
                 {/* Play Button with Image */}
                 <button
-                  onClick={() => song.status === "completed" && togglePlay(song.id)}
+                  onClick={(e) => {
+                    e.stopPropagation()
+                    if (song.status === "completed") togglePlay(song.id)
+                  }}
                   disabled={song.status !== "completed"}
                   className="relative h-12 w-12 shrink-0 overflow-hidden rounded-lg"
                   aria-label={playingId === song.id ? "Pause" : "Play"}
@@ -211,6 +227,7 @@ export function SongLibraryPanel({ songs: externalSongs }: SongLibraryPanelProps
                       variant="ghost"
                       size="sm"
                       className="h-8 w-8 p-0 text-muted-foreground opacity-0 transition-opacity group-hover:opacity-100"
+                      onClick={(e) => e.stopPropagation()}
                     >
                       <MoreHorizontal className="h-4 w-4" />
                       <span className="sr-only">Song options</span>
@@ -227,6 +244,11 @@ export function SongLibraryPanel({ songs: externalSongs }: SongLibraryPanelProps
                     </DropdownMenuItem>
                   </DropdownMenuContent>
                 </DropdownMenu>
+
+                {/* Chevron for clickable cards */}
+                {onSongClick && (
+                  <ChevronRight className="h-5 w-5 text-muted-foreground/50 transition-colors group-hover:text-primary" />
+                )}
               </div>
 
               {/* Progress Bar */}

@@ -182,7 +182,13 @@ export default function Home() {
 
             {/* Right Panel - Song Library (hidden on mobile/tablet) */}
             <div className="hidden lg:block lg:w-1/2 overflow-hidden">
-              <SongLibraryPanel songs={generatedSongs} />
+              <SongLibraryPanel
+                songs={generatedSongs}
+                onSongClick={(song) => {
+                  setActiveTab("library")
+                  // The library page will show song details
+                }}
+              />
             </div>
           </main>
         )}
