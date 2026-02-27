@@ -444,10 +444,18 @@ export function LyricsPage({ onNavigateToSong }: LyricsPageProps) {
             {filtered.map((entry) => {
               const locked = hasSongs(entry)
               return (
-                <button
+                <div
                   key={entry.id}
                   onClick={() => handleSelectLyric(entry)}
-                  className={`group flex w-full items-start gap-3 rounded-lg p-3 text-left transition-colors ${
+                  role="button"
+                  tabIndex={0}
+                  onKeyDown={(e) => {
+                    if (e.key === "Enter" || e.key === " ") {
+                      e.preventDefault()
+                      handleSelectLyric(entry)
+                    }
+                  }}
+                  className={`group flex w-full cursor-pointer items-start gap-3 rounded-lg p-3 text-left transition-colors ${
                     selectedLyric?.id === entry.id
                       ? "bg-primary/10 border border-primary/20"
                       : "hover:bg-muted border border-transparent"
@@ -515,8 +523,7 @@ export function LyricsPage({ onNavigateToSong }: LyricsPageProps) {
                       </DropdownMenuContent>
                     </DropdownMenu>
                   )}
-
-                </button>
+                </div>
               )
             })}
           </div>
