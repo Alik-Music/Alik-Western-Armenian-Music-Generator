@@ -44,6 +44,7 @@ export default function Home() {
   const [activeTab, setActiveTab] = useState("create")
   const [isGenerating, setIsGenerating] = useState(false)
   const [generatedSongs, setGeneratedSongs] = useState<Song[]>([])
+  const [selectedSongId, setSelectedSongId] = useState<string | null>(null)
   
   // Mobile player state
   const [currentSong, setCurrentSong] = useState<PlayingSong | null>(null)
@@ -185,8 +186,8 @@ export default function Home() {
               <SongLibraryPanel
                 songs={generatedSongs}
                 onSongClick={(song) => {
+                  setSelectedSongId(song.id)
                   setActiveTab("library")
-                  // The library page will show song details
                 }}
               />
             </div>
@@ -200,6 +201,8 @@ export default function Home() {
               setActiveTab("lyrics")
               // Could also pass lyricsId to LyricsPage to highlight the lyrics
             }}
+            initialSelectedSongId={selectedSongId}
+            onClearInitialSong={() => setSelectedSongId(null)}
           />
         )}
         {activeTab === "lyrics" && (

@@ -51,6 +51,8 @@ export interface LibrarySong {
 interface LibraryPageProps {
   onPlaySong?: (song: LibrarySong) => void
   onNavigateToLyrics?: (lyricsId: string) => void
+  initialSelectedSongId?: string | null
+  onClearInitialSong?: () => void
 }
 
 const initialLibrarySongs: LibrarySong[] = [
@@ -126,7 +128,7 @@ const initialLibrarySongs: LibrarySong[] = [
   },
 ]
 
-export function LibraryPage({ onPlaySong, onNavigateToLyrics }: LibraryPageProps) {
+export function LibraryPage({ onPlaySong, onNavigateToLyrics, initialSelectedSongId, onClearInitialSong }: LibraryPageProps) {
   const [search, setSearch] = useState("")
   const [playingId, setPlayingId] = useState<string | null>(null)
   const [progress, setProgress] = useState<Record<string, number>>({})
@@ -141,6 +143,17 @@ export function LibraryPage({ onPlaySong, onNavigateToLyrics }: LibraryPageProps
       if (intervalRef.current) clearInterval(intervalRef.current)
     }
   }, [])
+
+  // Open song detail if initialSelectedSongId is provided
+  useEffect(() => {
+    if (initialSelectedSongId) {
+      const song = songs.find((s) => s.id === initialSelectedSongId)
+      if (song) {
+        setSelectedSong(song)
+        onClearInitialSong?.()
+      }
+    }
+  }, [initialSelectedSongId, songs, onClearInitialSong])
 
   const togglePlay = (song: LibrarySong, e?: React.MouseEvent) => {
     if (e) e.stopPropagation()
