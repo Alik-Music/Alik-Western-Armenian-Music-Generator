@@ -1,7 +1,7 @@
 "use client"
 
 import Image from "next/image"
-import { Library, FileText, Plus, Settings, LogOut } from "lucide-react"
+import { Library, FileText, Plus, Settings, LogOut, User, Coins } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import {
   DropdownMenu,
@@ -57,7 +57,7 @@ export function AppHeader({ activeTab, onTabChange }: AppHeaderProps) {
           </button>
         </nav>
 
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-2 lg:gap-3">
           <Button
             onClick={() => onTabChange("create")}
             className={`hidden lg:flex gap-1.5 font-medium tracking-wide ${
@@ -71,6 +71,12 @@ export function AppHeader({ activeTab, onTabChange }: AppHeaderProps) {
             Create
           </Button>
 
+          {/* Credit Counter */}
+          <div className="flex items-center gap-1.5 rounded-full bg-primary-foreground/10 px-3 py-1.5">
+            <Coins className="h-4 w-4 text-secondary" />
+            <span className="text-sm font-semibold text-primary-foreground">250</span>
+          </div>
+
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button
@@ -78,8 +84,8 @@ export function AppHeader({ activeTab, onTabChange }: AppHeaderProps) {
                 className="relative h-9 w-9 rounded-full hover:bg-primary-foreground/10"
               >
                 <Avatar className="h-9 w-9 border-2 border-secondary">
-                  <AvatarFallback className="bg-secondary text-secondary-foreground text-sm font-bold">
-                    JD
+                  <AvatarFallback className="bg-secondary text-secondary-foreground">
+                    <User className="h-5 w-5" />
                   </AvatarFallback>
                 </Avatar>
               </Button>
