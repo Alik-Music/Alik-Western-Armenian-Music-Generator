@@ -21,7 +21,10 @@ export function AppHeader({ activeTab, onTabChange }: AppHeaderProps) {
   return (
     <header className="bg-primary text-primary-foreground">
       <div className="flex items-center justify-between px-6 py-3">
-        <div className="flex items-center">
+        <button
+          onClick={() => onTabChange("create")}
+          className="flex items-center"
+        >
           <Image
             src="/images/logo.png"
             alt="Alik logo"
@@ -30,7 +33,7 @@ export function AppHeader({ activeTab, onTabChange }: AppHeaderProps) {
             className="h-8 w-auto object-contain"
             priority
           />
-        </div>
+        </button>
 
         <nav className="hidden lg:flex items-center gap-1">
           <button
