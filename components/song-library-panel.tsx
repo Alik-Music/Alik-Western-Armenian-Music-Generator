@@ -1,6 +1,5 @@
 "use client"
 
-import { useState, useRef, useEffect } from "react"
 import {
   Play,
   Pause,
@@ -82,43 +81,12 @@ const initialSongs: Song[] = [
 interface SongLibraryPanelProps {
   songs: Song[]
   onSongClick?: (song: Song) => void
+  onPlaySong?: (song: Song) => void
+  currentPlayingId?: string | null
 }
 
-export function SongLibraryPanel({ songs: externalSongs, onSongClick }: SongLibraryPanelProps) {
+export function SongLibraryPanel({ songs: externalSongs, onSongClick, onPlaySong, currentPlayingId }: SongLibraryPanelProps) {
   const allSongs = [...externalSongs, ...initialSongs]
-  const [playingId, setPlayingId] = useState<string | null>(null)
-  const [progress, setProgress] = useState<Record<string, number>>({})
-  const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null)
-
-  useEffect(() => {
-    return () => {
-      if (intervalRef.current) clearInterval(intervalRef.current)
-    }
-  }, [])
-
-  const togglePlay = (songId: string) => {
-    if (playingId === songId) {
-      setPlayingId(null)
-      if (intervalRef.current) clearInterval(intervalRef.current)
-    } else {
-      setPlayingId(songId)
-      if (intervalRef.current) clearInterval(intervalRef.current)
-      if (!progress[songId]) {
-        setProgress((prev) => ({ ...prev, [songId]: 0 }))
-      }
-      intervalRef.current = setInterval(() => {
-        setProgress((prev) => {
-          const current = prev[songId] || 0
-          if (current >= 100) {
-            setPlayingId(null)
-            if (intervalRef.current) clearInterval(intervalRef.current)
-            return { ...prev, [songId]: 0 }
-          }
-          return { ...prev, [songId]: current + 0.5 }
-        })
-      }, 100)
-    }
-  }
 
   return (
     <div className="flex h-full flex-col bg-primary/[0.03]">
@@ -152,7 +120,7 @@ export function SongLibraryPanel({ songs: externalSongs, onSongClick }: SongLibr
               className={`group rounded-xl border bg-card p-4 transition-all ${
                 onSongClick ? "cursor-pointer" : ""
               } ${
-                playingId === song.id
+                currentPlayingId === song.id
                   ? "border-secondary shadow-md shadow-secondary/10"
                   : "border-border hover:border-primary/30 hover:shadow-sm"
               }`}
@@ -162,11 +130,11 @@ export function SongLibraryPanel({ songs: externalSongs, onSongClick }: SongLibr
                 <button
                   onClick={(e) => {
                     e.stopPropagation()
-                    if (song.status === "completed") togglePlay(song.id)
+                    if (song.status === "completed" && onPlaySong) onPlaySong(song)
                   }}
                   disabled={song.status !== "completed"}
                   className="relative h-12 w-12 shrink-0 overflow-hidden rounded-lg"
-                  aria-label={playingId === song.id ? "Pause" : "Play"}
+                  aria-label={currentPlayingId === song.id ? "Pause" : "Play"}
                 >
                   {/* Background Image */}
                   <img
@@ -180,7 +148,7 @@ export function SongLibraryPanel({ songs: externalSongs, onSongClick }: SongLibr
                   <div className="absolute inset-0 flex items-center justify-center">
                     {song.status === "generating" ? (
                       <div className="h-5 w-5 animate-spin rounded-full border-2 border-white border-t-transparent" />
-                    ) : playingId === song.id ? (
+                    ) : currentPlayingId === song.id ? (
                       <Pause className="h-5 w-5 text-white" />
                     ) : (
                       <Play className="h-5 w-5 pl-0.5 text-white" />
@@ -248,17 +216,6 @@ export function SongLibraryPanel({ songs: externalSongs, onSongClick }: SongLibr
                 )}
               </div>
 
-              {/* Progress Bar */}
-              {playingId === song.id && (
-                <div className="mt-3">
-                  <div className="h-1 overflow-hidden rounded-full bg-primary/10">
-                    <div
-                      className="h-full rounded-full bg-secondary transition-all"
-                      style={{ width: `${progress[song.id] || 0}%` }}
-                    />
-                  </div>
-                </div>
-              )}
             </div>
           ))}
 

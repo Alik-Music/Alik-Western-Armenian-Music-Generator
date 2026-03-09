@@ -162,9 +162,9 @@ export default function Home() {
     []
   )
 
-  // Bottom padding: mobile/tablet = nav (3.5rem) + player if visible (~4rem), desktop = player only (~4rem) if visible
-  const bottomPaddingMobile = currentSong ? "pb-[7.5rem]" : "pb-[3.5rem]"
-  const bottomPaddingDesktop = currentSong ? "lg:pb-[4rem]" : "lg:pb-0"
+  // Bottom padding: mobile/tablet = nav (3.75rem) + player (~4rem), desktop = player only (~4rem)
+  const bottomPaddingMobile = "pb-[7.5rem]"
+  const bottomPaddingDesktop = "lg:pb-[4rem]"
 
   return (
     <div className="flex h-screen flex-col bg-background">
@@ -189,6 +189,8 @@ export default function Home() {
                   setSelectedSongId(song.id)
                   setActiveTab("library")
                 }}
+                onPlaySong={playSong}
+                currentPlayingId={currentSong?.id}
               />
             </div>
           </main>
@@ -219,7 +221,6 @@ export default function Home() {
         song={currentSong}
         isPlaying={isPlaying}
         onPlayPause={togglePlayPause}
-        onClose={closePlayer}
         onSkipBack={() => skipToSong("back")}
         onSkipForward={() => skipToSong("forward")}
       />
