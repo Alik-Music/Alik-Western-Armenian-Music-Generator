@@ -10,6 +10,7 @@ import { LibraryPage } from "@/components/library-page"
 import { LyricsPage } from "@/components/lyrics-page"
 import { LoginPage } from "@/components/login-page"
 import { RegisterPage } from "@/components/register-page"
+import { SettingsPage } from "@/components/settings-page"
 
 // Demo songs for the library
 const demoSongs: Song[] = [
@@ -44,6 +45,7 @@ const demoSongs: Song[] = [
 
 export default function Home() {
   const [authView, setAuthView] = useState<"login" | "register" | "app">("login")
+  const [settingsOpen, setSettingsOpen] = useState(false)
   const [activeTab, setActiveTab] = useState("create")
   const [isGenerating, setIsGenerating] = useState(false)
   const [generatedSongs, setGeneratedSongs] = useState<Song[]>([])
@@ -190,7 +192,7 @@ export default function Home() {
 
   return (
     <div className="flex h-screen flex-col bg-background">
-      <AppHeader activeTab={activeTab} onTabChange={setActiveTab} />
+      <AppHeader activeTab={activeTab} onTabChange={setActiveTab} onOpenSettings={() => setSettingsOpen(true)} />
 
       <div className={`flex flex-1 flex-col overflow-hidden ${bottomPaddingMobile} ${bottomPaddingDesktop}`}>
         {activeTab === "create" && (
@@ -247,6 +249,15 @@ export default function Home() {
         onSkipForward={() => skipToSong("forward")}
       />
       <BottomNav activeTab={activeTab} onTabChange={setActiveTab} />
+
+      {/* Settings overlay */}
+      {settingsOpen && (
+        <div className="fixed inset-0 z-50 flex items-start justify-end bg-black/40 backdrop-blur-sm lg:items-stretch">
+          <div className="flex h-full w-full max-w-md flex-col overflow-hidden bg-background shadow-2xl animate-in slide-in-from-right duration-300">
+            <SettingsPage onBack={() => setSettingsOpen(false)} />
+          </div>
+        </div>
+      )}
     </div>
   )
 }

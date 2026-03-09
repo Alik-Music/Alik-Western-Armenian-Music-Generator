@@ -15,9 +15,10 @@ import { Avatar, AvatarFallback } from "@/components/ui/avatar"
 interface AppHeaderProps {
   activeTab: string
   onTabChange: (tab: string) => void
+  onOpenSettings: () => void
 }
 
-export function AppHeader({ activeTab, onTabChange }: AppHeaderProps) {
+export function AppHeader({ activeTab, onTabChange, onOpenSettings }: AppHeaderProps) {
   return (
     <header className="bg-primary text-primary-foreground">
       <div className="flex items-center justify-between px-6 py-3">
@@ -94,7 +95,7 @@ export function AppHeader({ activeTab, onTabChange }: AppHeaderProps) {
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end" className="w-48">
-              <DropdownMenuItem>
+              <DropdownMenuItem onClick={onOpenSettings}>
                 <Settings className="mr-2 h-4 w-4" />
                 Settings
               </DropdownMenuItem>
