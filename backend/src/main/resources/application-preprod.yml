@@ -1,0 +1,31 @@
+spring:
+  config:
+    activate:
+      on-profile: preprod
+  data:
+    mongodb:
+      uri: ${SPRING_DATA_MONGODB_URI}
+      database: ${SPRING_DATA_MONGODB_DATABASE}
+
+server:
+  port: ${SERVER_PORT:8080}
+  shutdown: graceful
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info
+  endpoint:
+    health:
+      probes:
+        enabled: true
+
+logging:
+  level:
+    root: ${LOG_LEVEL_ROOT:INFO}
+
+provider:
+  base-url: ${PROVIDER_BASE_URL}
+  api-key: ${PROVIDER_API_KEY}
+  callback-base-url: ${PROVIDER_CALLBACK_BASE_URL}
