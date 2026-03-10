@@ -1,0 +1,9 @@
+spring:
+  data:
+    mongodb:
+      uri: ${SPRING_DATA_MONGODB_URI:mongodb://localhost:27017}
+      database: ${SPRING_DATA_MONGODB_DATABASE:alike_db}
+
+logging:
+  level:
+    root: ${LOG_LEVEL_ROOT:DEBUG}

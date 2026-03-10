@@ -1,0 +1,30 @@
+server:
+  port: ${SERVER_PORT:8080}
+
+spring:
+  application:
+    name: ${APP_NAME:musicgen-backend}
+  data:
+    mongodb:
+      uri: ${SPRING_DATA_MONGODB_URI:mongodb://localhost:27017}
+      database: ${SPRING_DATA_MONGODB_DATABASE:alike_db}
+  jackson:
+    default-property-inclusion: non_null
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info
+
+logging:
+  level:
+    root: ${LOG_LEVEL_ROOT:INFO}
+
+app:
+  name: ${APP_NAME:musicgen-backend}
+
+provider:
+  base-url: ${PROVIDER_BASE_URL:https://api.sunoapi.org}
+  api-key: ${PROVIDER_API_KEY:change-me}
+  callback-base-url: ${PROVIDER_CALLBACK_BASE_URL:http://localhost:${SERVER_PORT:8080}}
