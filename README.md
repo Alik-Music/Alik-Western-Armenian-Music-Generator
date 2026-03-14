@@ -187,6 +187,14 @@ cd backend
 docker build -t musicgen-backend:latest .
 ```
 
+- `docker-compose.yml` is deployment-oriented and avoids binding fixed host ports
+- for local Docker usage, combine it with [docker-compose.local.yml](/E:/Alik-Western-Armenian-Music-Generator/docker-compose.local.yml):
+
+```bash
+docker compose -f docker-compose.yml -f docker-compose.local.yml up --build
+```
+
+- the frontend proxies `/api` requests to the backend internally; in deployed environments, leave `NEXT_PUBLIC_BACKEND_URL` empty unless you intentionally expose the backend on its own public URL
 - run with env vars only; do not hardcode secrets
 
 ## MVP Out Of Scope

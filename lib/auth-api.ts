@@ -1,8 +1,9 @@
 "use client"
 
-const backendBaseUrl =
-  process.env.NEXT_PUBLIC_BACKEND_URL?.replace(/\/+$/, "") ??
-  "http://localhost:8080"
+const configuredBackendBaseUrl = process.env.NEXT_PUBLIC_BACKEND_URL?.trim()
+const backendBaseUrl = configuredBackendBaseUrl
+  ? configuredBackendBaseUrl.replace(/\/+$/, "")
+  : ""
 
 const sessionStorageKey = "balians.session-token"
 
@@ -72,13 +73,16 @@ async function authRequest<T>(
   init?: RequestInit,
   sessionToken?: string | null,
 ): Promise<T> {
+  const headers = new Headers(init?.headers)
+  headers.set("Content-Type", "application/json")
+
+  if (sessionToken) {
+    headers.set("X-Session-Token", sessionToken)
+  }
+
   const response = await fetch(`${backendBaseUrl}${path}`, {
     ...init,
-    headers: {
-      "Content-Type": "application/json",
-      ...(sessionToken ? { "X-Session-Token": sessionToken } : {}),
-      ...(init?.headers ?? {}),
-    },
+    headers,
     cache: "no-store",
   })
 

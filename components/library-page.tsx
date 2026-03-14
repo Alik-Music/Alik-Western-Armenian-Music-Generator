@@ -30,22 +30,10 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog"
+import type { Song } from "@/components/song-library-panel"
 import { SongDetailPage, type SongDetail } from "@/components/song-detail-page"
 
-export interface LibrarySong {
-  id: string
-  title: string
-  genre: string
-  duration: string
-  createdAt: string
-  status?: "completed" | "generating" | "failed"
-  prompt?: string
-  lyrics?: string
-  lyricsId?: string
-  lyricsTitle?: string
-  audioUrl?: string
-  streamAudioUrl?: string
-}
+export type LibrarySong = Song
 
 interface LibraryPageProps {
   songs: LibrarySong[]

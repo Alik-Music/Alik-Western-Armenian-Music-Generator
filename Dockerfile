@@ -10,6 +10,12 @@ FROM node:20-alpine AS builder
 
 WORKDIR /app
 
+ARG NEXT_PUBLIC_BACKEND_URL=
+ARG INTERNAL_BACKEND_URL=http://localhost:8080
+
+ENV NEXT_PUBLIC_BACKEND_URL=$NEXT_PUBLIC_BACKEND_URL
+ENV INTERNAL_BACKEND_URL=$INTERNAL_BACKEND_URL
+
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
 
@@ -19,8 +25,13 @@ FROM node:20-alpine AS runner
 
 WORKDIR /app
 
+ARG NEXT_PUBLIC_BACKEND_URL=
+ARG INTERNAL_BACKEND_URL=http://localhost:8080
+
 ENV NODE_ENV=production
 ENV PORT=3000
+ENV NEXT_PUBLIC_BACKEND_URL=$NEXT_PUBLIC_BACKEND_URL
+ENV INTERNAL_BACKEND_URL=$INTERNAL_BACKEND_URL
 
 COPY --from=builder /app/.next ./.next
 COPY --from=builder /app/public ./public

@@ -112,26 +112,30 @@ export interface CreateGenerationPayload {
   model: GenerationModel
 }
 
-const backendBaseUrl =
-  process.env.NEXT_PUBLIC_BACKEND_URL?.replace(/\/+$/, "") ??
-  "http://localhost:8080"
+const configuredBackendBaseUrl = process.env.NEXT_PUBLIC_BACKEND_URL?.trim()
+const backendBaseUrl = configuredBackendBaseUrl
+  ? configuredBackendBaseUrl.replace(/\/+$/, "")
+  : ""
 
 function getSessionHeader() {
   if (typeof window === "undefined") {
-    return {}
+    return null
   }
-  const token = window.localStorage.getItem("balians.session-token")
-  return token ? { "X-Session-Token": token } : {}
+  return window.localStorage.getItem("balians.session-token")
 }
 
 async function apiRequest<T>(path: string, init?: RequestInit): Promise<T> {
+  const headers = new Headers(init?.headers)
+  headers.set("Content-Type", "application/json")
+
+  const sessionToken = getSessionHeader()
+  if (sessionToken) {
+    headers.set("X-Session-Token", sessionToken)
+  }
+
   const response = await fetch(`${backendBaseUrl}${path}`, {
     ...init,
-    headers: {
-      "Content-Type": "application/json",
-      ...getSessionHeader(),
-      ...(init?.headers ?? {}),
-    },
+    headers,
     cache: "no-store",
   })
 

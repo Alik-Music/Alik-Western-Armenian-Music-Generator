@@ -2,9 +2,10 @@
 
 import { getStoredSessionToken } from "@/lib/auth-api"
 
-const backendBaseUrl =
-  process.env.NEXT_PUBLIC_BACKEND_URL?.replace(/\/+$/, "") ??
-  "http://localhost:8080"
+const configuredBackendBaseUrl = process.env.NEXT_PUBLIC_BACKEND_URL?.trim()
+const backendBaseUrl = configuredBackendBaseUrl
+  ? configuredBackendBaseUrl.replace(/\/+$/, "")
+  : ""
 
 interface ApiSuccess<T> {
   success: boolean
@@ -18,13 +19,16 @@ interface ApiError {
 
 async function adminRequest<T>(path: string, init?: RequestInit): Promise<T> {
   const sessionToken = getStoredSessionToken()
+  const headers = new Headers(init?.headers)
+  headers.set("Content-Type", "application/json")
+
+  if (sessionToken) {
+    headers.set("X-Session-Token", sessionToken)
+  }
+
   const response = await fetch(`${backendBaseUrl}${path}`, {
     ...init,
-    headers: {
-      "Content-Type": "application/json",
-      ...(sessionToken ? { "X-Session-Token": sessionToken } : {}),
-      ...(init?.headers ?? {}),
-    },
+    headers,
     cache: "no-store",
   })
 
